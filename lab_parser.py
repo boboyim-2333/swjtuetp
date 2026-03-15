@@ -1,5 +1,4 @@
 from bs4 import BeautifulSoup
-import re
 from typing import List, Dict
 
 
@@ -8,6 +7,9 @@ class LabParser:
         self.filter_keyword = filter_keyword
 
     def parse(self, html_content: str) -> List[Dict]:
+        """
+        解析表格，提取所有包含关键字的行
+        """
         soup = BeautifulSoup(html_content, 'html.parser')
         rows = soup.find_all('tr', class_='el-table__row')
 
@@ -17,14 +19,13 @@ class LabParser:
             if len(cols) < 12: continue
 
             course_name = cols[5].get_text(strip=True)
-            if self.filter_keyword not in course_name: continue
+            if self.filter_keyword not in course_name:
+                continue
 
-            # 提取周次和星期并强制转为整数
             w_str = cols[9].get_text(strip=True)
             wd_str = cols[10].get_text(strip=True)
 
             item = {
-                "course_name": course_name,
                 "project_name": cols[6].get_text(strip=True),
                 "location": cols[7].get_text(strip=True),
                 "week": int(w_str) if w_str.isdigit() else 0,
@@ -33,6 +34,6 @@ class LabParser:
             }
             results.append(item)
 
-        # 排序：按周次升序，周次相同按星期升序
+        # 按时间排序
         results.sort(key=lambda x: (x['week'], x['weekday']))
         return results
