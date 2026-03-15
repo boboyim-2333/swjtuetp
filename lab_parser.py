@@ -19,6 +19,7 @@ class LabParser:
             course_name = cols[5].get_text(strip=True)
             if self.filter_keyword not in course_name: continue
 
+            # 提取周次和星期并强制转为整数
             w_str = cols[9].get_text(strip=True)
             wd_str = cols[10].get_text(strip=True)
 
@@ -32,6 +33,6 @@ class LabParser:
             }
             results.append(item)
 
-        # 严格按周次、星期排序
+        # 排序：按周次升序，周次相同按星期升序
         results.sort(key=lambda x: (x['week'], x['weekday']))
         return results
