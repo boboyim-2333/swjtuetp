@@ -120,7 +120,9 @@ class Main(Star):
 
                 if next_labs:
                     nxt = next_labs[0]
-                    msg = (f"📅 当前是第 {current_week} 周，本周你没有物理实验。\n\n"
+                    msg = (f"当前sender_id{event.get_sender_id}"
+                           f"正在查询{user_id}...."
+                           f"📅 当前是第 {current_week} 周，本周你没有物理实验。\n\n"
                            f"🔍 帮你预告下一次实验：\n"
                            f"📅 时间：第 {nxt['week']} 周 星期{nxt['weekday']}"
                            f"{self._format_lab(nxt)}")
